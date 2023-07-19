@@ -14,8 +14,7 @@ export class GridUserEditComponent implements OnInit, OnDestroy, DoCheck {
   options: Array<any> = []
   id: number | undefined;
   editMode = false;
-  // @ts-ignore
-  userForm: FormGroup;
+  userForm: FormGroup | undefined;
   subscription: Subscription | undefined;
   private _jsonURL = 'assets/dropdown_Test.json';
   constructor(
@@ -63,15 +62,16 @@ export class GridUserEditComponent implements OnInit, OnDestroy, DoCheck {
     let phone = null;
     let country: string | undefined = ''
     if (this.editMode) {
-      // @ts-ignore
       const user = this.authSrv.getUser(this.id);
-      userName = user.userName;
-      firstName = user.firstName;
-      lastName = user.lastName;
-      email = user.email;
-      password = user.password;
-      phone = user.phone;
-      country = user.country;
+      if (user) {
+        userName = user.userName;
+        firstName = user.firstName;
+        lastName = user.lastName;
+        email = user.email;
+        password = user.password;
+        phone = user.phone;
+        country = user.country;
+      }
     }
     this.userForm = new FormGroup({
       'firstName': new FormControl(firstName, Validators.required),
@@ -84,15 +84,17 @@ export class GridUserEditComponent implements OnInit, OnDestroy, DoCheck {
     });
   }
   onSubmit() {
-    const user = new User (
-      this.userForm.get('firstName')?.value,
-      this.userForm.get('lastName')?.value,
-      this.userForm.get('userName')?.value,
-      this.userForm.get('email')?.value,
-      this.userForm.get('password')?.value,
-      this.userForm.get('phone')?.value,
-      this.userForm.get('country')?.value
+    if (this.userForm) {
+      const user = new User (
+        this.userForm.get('firstName')?.value,
+        this.userForm.get('lastName')?.value,
+        this.userForm.get('userName')?.value,
+        this.userForm.get('email')?.value,
+        this.userForm.get('password')?.value,
+        this.userForm.get('phone')?.value,
+        this.userForm.get('country')?.value
       )
-    this.authSrv.updateUser(this.id, user );
+      this.authSrv.updateUser(this.id, user );
+    }
   }
 }

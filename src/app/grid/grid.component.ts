@@ -10,8 +10,7 @@ import {Subscription} from "rxjs";
 })
 export class GridComponent implements OnInit, OnDestroy {
   users: Array<User> = [];
-  // @ts-ignore
-  subscription: Subscription;
+  subscription: Subscription | undefined;
   options: Array<any> = []
   private _jsonURL = 'assets/dropdown_Test.json';
   constructor(
@@ -41,6 +40,8 @@ export class GridComponent implements OnInit, OnDestroy {
     this.authSrv.deleteUser(user);
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

@@ -1,14 +1,13 @@
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {User} from "./user.model";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // @ts-ignore
   usersChanged = new Subject<User[]>();
   errorSub = new Subject<string>();
   deletedUserId = new Subject<number>();
@@ -42,8 +41,7 @@ export class AuthService {
       country: 'BE'
     },
   ];
-  // @ts-ignore
-  user: User;
+  user: User | undefined;
   constructor(
     private router: Router,
   ) {
@@ -73,14 +71,20 @@ export class AuthService {
   getUsers() {
     return this.users.slice();
   }
-  getUser(userId: number) {
-    return this.users[userId];
+
+  getUser(userId: number | undefined) {
+    if (userId) {
+      return this.users[userId];
+    } else {
+      return null;
+    }
   }
 
   updateUser(userId: number | undefined, user: User) {
-    // @ts-ignore
-    this.users[userId] = user;
-    this.usersChanged.next(this.users.slice());
+    if (userId && user) {
+      this.users[userId] = user;
+      this.usersChanged.next(this.users.slice());
+    }
   }
   deleteUser(userId: number, ) {
     this.users.splice(userId, 1);

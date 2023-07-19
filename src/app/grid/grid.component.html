@@ -1,0 +1,22 @@
+<div class="row" style="justify-content: center">
+  <div class="col-xs-12 col-md-6 col-md-offset-6">
+    <div *ngFor="let user of users index as i" class="row form-control" style="margin-bottom: 5px;">
+      <span>{{user.userName}}</span>
+      <div class="row">
+        <div class="col-md-12">
+          <button
+            type="button"
+            (click)="onEditClicked(i)"
+            class="btn btn-secondary register-btn" style="margin-right: 5px">Edit</button>
+            <button (click)="onDeleteClicked(i)" type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" style="justify-content: center">
+  <div class="col-xs-12 col-md-6 col-md-offset-6" style="padding-left: 0;
+    padding-right: 20px;">
+    <router-outlet></router-outlet>
+  </div>
+</div>
